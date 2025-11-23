@@ -1,13 +1,14 @@
-import { Box, IconButton, Heading, VStack, Button, HStack, Text } from '@chakra-ui/react';
+import { Box, Heading, VStack, Button, HStack, Text } from '@chakra-ui/react';
 import { useColorMode } from './ui/color-mode';
 import { useEffect, useState } from 'react';
 import { LazySvg } from './lazy-svg';
+import type { MtgSet } from '@/types/mtg';
 
 export default function Sidebar() {
   const { colorMode } = useColorMode();
-  const [mtgsets, setMtgSets] = useState([]);
+  const [mtgsets, setMtgSets] = useState<MtgSet[]>([]);
   const [ondeck, setOnDeck] = useState('');
-  const handleClick = (setId) => {
+  const handleClick = (setId: string) => {
     setOnDeck(setId);
     console.log(ondeck);
   };
@@ -18,23 +19,8 @@ export default function Sidebar() {
         const res = await fetch('https://api.scryfall.com/sets');
         const data = await res.json();
         const draftable = data.data.filter(
-          (set) => set.set_type == 'expansion' && set.card_count > 120
-        );
-        setMtgSets(draftable);
-        console.log('Scryfall sets:', data.data); // logs the array of sets
-      } catch (err) {
-        console.error('Error fetching sets:', err);
-      }
-    }
-    fetchSets();
-  }, []);
-  useEffect(() => {
-    async function fetchSets() {
-      try {
-        const res = await fetch('https://api.scryfall.com/sets');
-        const data = await res.json();
-        const draftable = data.data.filter(
-          (set) => (set.set_type == 'expansion' || set.set_type == 'core') && set.card_count > 120
+          (set: MtgSet) =>
+            (set.set_type == 'expansion' || set.set_type == 'core') && set.card_count > 120
         );
         setMtgSets(draftable);
         console.log('Scryfall sets:', data.data); // logs the array of sets
@@ -71,8 +57,9 @@ export default function Sidebar() {
             borderRadius="0" // removes rounded corners
           >
             <HStack justify="space-between" w="100%">
-              {set.name}
-              <LazySvg name={set.code} width={24} height={24} />
+              <Text pr={3}>{set.name}</Text>
+
+              <LazySvg name={set.code} />
             </HStack>
           </Button>
         ))}
