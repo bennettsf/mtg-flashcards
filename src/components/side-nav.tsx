@@ -28,6 +28,22 @@ export default function Sidebar() {
     }
     fetchSets();
   }, []);
+  useEffect(() => {
+    async function fetchSets() {
+      try {
+        const res = await fetch('https://api.scryfall.com/sets');
+        const data = await res.json();
+        const draftable = data.data.filter(
+          (set) => (set.set_type == 'expansion' || set.set_type == 'core') && set.card_count > 120
+        );
+        setMtgSets(draftable);
+        console.log('Scryfall sets:', data.data); // logs the array of sets
+      } catch (err) {
+        console.error('Error fetching sets:', err);
+      }
+    }
+    fetchSets();
+  }, []);
 
   return (
     <Box
@@ -38,7 +54,6 @@ export default function Sidebar() {
       bg={colorMode === 'dark' ? 'gray.800' : 'gray.50'}
       scrollBehavior="smooth"
       overflow="scroll"
-      scrollbar="hidden"
     >
       <VStack my="4px">
         <Heading size="md" my="10px">
@@ -54,7 +69,7 @@ export default function Sidebar() {
             id={set.code}
           >
             {set.name}
-            <LazySvg name={set.code} id={set.code} />
+            <LazySvg name={set.code} />
           </IconButton>
         ))}
       </VStack>
