@@ -61,7 +61,7 @@ export default function Sidebar() {
           >
             <HStack justify="space-between" w="100%">
               <Text pr={3}>{set.name}</Text>
-              <LazySvg name={set.code} stroke="black" fill="white" />
+              <LazySvg name={set.code} stroke="red" fill="white" />
             </HStack>
           </Button>
 
