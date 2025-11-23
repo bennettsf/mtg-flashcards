@@ -54,6 +54,7 @@ export default function Sidebar() {
       bg={colorMode === 'dark' ? 'gray.800' : 'gray.50'}
       scrollBehavior="smooth"
       overflow="scroll"
+      scrollbar="hidden"
     >
       <VStack my="4px">
         <Heading size="md" my="10px">

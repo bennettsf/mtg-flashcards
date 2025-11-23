@@ -10,7 +10,6 @@ export function LazySvg({ name, ...props }: LazySvgProps) {
   const SvgComponent = svgs[`../assets/set_symbols/${name}.svg`] as React.FC<
     React.SVGProps<SVGSVGElement>
   >;
-  console.log('SVG Component:', SvgComponent);
 
   if (!SvgComponent) {
     console.warn(`SVG for set code "${name}" not found.`);
