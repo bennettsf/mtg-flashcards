@@ -50,18 +50,21 @@ export default function Sidebar() {
         {mtgsets.map((set) => (
           <Button
             key={set.code}
+            id={set.code}
             onClick={() => handleClick(set.code)}
+
             variant="ghost"
             w="100%"
             display="inline-flex"
-            borderRadius="0" // removes rounded corners
+            borderRadius="0"
+            color="gray.50"
           >
             <HStack justify="space-between" w="100%">
               <Text pr={3}>{set.name}</Text>
-
-              <LazySvg name={set.code} />
+              <LazySvg name={set.code} stroke="black" fill="white" />
             </HStack>
           </Button>
+
         ))}
       </VStack>
     </Box>
