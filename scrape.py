@@ -26,7 +26,8 @@ for mset in sets['data']:
 
 for set_code in set_codes:
     url = svg_uris[set_code]
-    svg = requests.get(url).text
+    svg = requests.get(url).text.replace("fill=\"#000\"", "")
+    svg = svg.replace("fill=\"none\"", "")
     output_path = os.path.join("./src/assets/set_symbols", set_code)
     output_path = output_path + ".svg"
     print(output_path)

@@ -64,13 +64,14 @@ export default function Sidebar() {
           <IconButton
             onClick={() => handleClick(set.code)}
             my="-3px"
-            variant="ghost"
             w="103%"
             key={set.code}
             id={set.code}
+            color="gray.50"
+            variant="solid"
           >
             {set.name}
-            <LazySvg name={set.code} />
+            <LazySvg name={set.code} stroke="black" fill="white" />
           </IconButton>
         ))}
       </VStack>
