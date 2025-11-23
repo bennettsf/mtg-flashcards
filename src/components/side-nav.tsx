@@ -1,4 +1,4 @@
-import { Box, Button, Flex, IconButton, Heading, VStack } from '@chakra-ui/react';
+import { Box, IconButton, Heading, VStack, Button, HStack, Text } from '@chakra-ui/react';
 import { useColorMode } from './ui/color-mode';
 import { useEffect, useState } from 'react';
 import { LazySvg } from './lazy-svg';
@@ -53,25 +53,28 @@ export default function Sidebar() {
       h="100%"
       bg={colorMode === 'dark' ? 'gray.800' : 'gray.50'}
       scrollBehavior="smooth"
-      overflow="scroll"
       scrollbar="hidden"
+      overflow="scroll"
     >
-      <VStack my="4px">
-        <Heading size="md" my="10px">
+      <VStack gap={0} align="stretch">
+        <Heading size="md" my="10px" textAlign="center">
           MTG Flashcards
         </Heading>
+
         {mtgsets.map((set) => (
-          <IconButton
-            onClick={() => handleClick(set.code)}
-            my="-3px"
-            variant="ghost"
-            w="103%"
+          <Button
             key={set.code}
-            id={set.code}
+            onClick={() => handleClick(set.code)}
+            variant="ghost"
+            w="100%"
+            display="inline-flex"
+            borderRadius="0" // removes rounded corners
           >
-            {set.name}
-            <LazySvg name={set.code} />
-          </IconButton>
+            <HStack justify="space-between" w="100%">
+              {set.name}
+              <LazySvg name={set.code} width={24} height={24} />
+            </HStack>
+          </Button>
         ))}
       </VStack>
     </Box>
