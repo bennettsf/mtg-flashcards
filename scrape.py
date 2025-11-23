@@ -27,7 +27,7 @@ for mset in sets['data']:
 for set_code in set_codes:
     url = svg_uris[set_code]
     svg = requests.get(url).text
-    output_path = os.path.join("./src/set_symbols", set_code)
+    output_path = os.path.join("./src/assets/set_symbols", set_code)
     output_path = output_path + ".svg"
     print(output_path)
     write_icon(svg, output_path)

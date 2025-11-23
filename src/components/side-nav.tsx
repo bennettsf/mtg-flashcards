@@ -28,7 +28,8 @@ export default function Sidebar() {
             const res = await fetch("https://api.scryfall.com/sets");
             const data = await res.json();
             const draftable = data.data.filter(
-                set => set.set_type == "expansion" && set.card_count > 120);
+                set => (set.set_type == "expansion" || set.set_type == "core")
+                        && set.card_count > 120);
             setMtgSets(draftable)
             console.log("Scryfall sets:", data.data); // logs the array of sets
           } catch (err) {
@@ -50,16 +51,17 @@ export default function Sidebar() {
     ><VStack my="4px">
           <Heading size="md" my="10px">MTG Flashcards</Heading>
           {mtgsets.map((set) => (
-              <IconButton 
+              <Button 
                 onClick={() => handleClick(set.code)} 
                 my="-3px" 
                 variant="ghost" 
                 w="103%" 
-                key={set.code} 
+                key={set.id} 
                 id={set.code}
                >
-            {set.name}<LazySvg name={set.code}/>
-            </IconButton>
+            {set.name}
+            <LazySvg name={set.code}/>
+            </Button>
           ))}
         </VStack>
     </Box>
