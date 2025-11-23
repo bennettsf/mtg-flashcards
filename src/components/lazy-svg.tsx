@@ -5,8 +5,11 @@ interface LazySvgProps extends ComponentProps<"svg"> {
 }
 
 export const LazySvg = async ({ name, ...props }: LazySvgProps) => {
-  const Svg = (await import(`@/assets/${name}.svg`)).default;
+  try {
+      const Svg = (await import(`@/assets/set_symbols/${name}.svg`)).default;
+      return <Svg {...props} />;
+  } catch(err) {
+    console.error("Error fetching sets:", err);
+  }
 
-
-  return <Svg {...props} />;
 };

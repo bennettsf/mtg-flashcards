@@ -47,8 +47,7 @@ export default function Sidebar() {
       bg={colorMode === 'dark' ? 'gray.800' : 'gray.50'}
       scrollBehavior="smooth"
       overflow="scroll"
-    >
-        <VStack my="4px">
+    ><VStack my="4px">
           <Heading size="md" my="10px">MTG Flashcards</Heading>
           {mtgsets.map((set) => (
               <IconButton 
@@ -58,8 +57,9 @@ export default function Sidebar() {
                 w="103%" 
                 key={set.code} 
                 id={set.code}
-                icon="assets/set_symbols/{set.code}.svg"
-               >{set.name}</IconButton>
+               >
+            {set.name}<LazySvg name={set.code}/>
+            </IconButton>
           ))}
         </VStack>
     </Box>
