@@ -1,8 +1,22 @@
 import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { useColorMode } from './ui/color-mode';
+import { useEffect } from 'react';
 
 export default function Header() {
   const { colorMode } = useColorMode();
+
+    useEffect(() => {
+        async function fetchSets() {
+          try {
+            const res = await fetch("https://api.scryfall.com/sets");
+            const data = await res.json();
+            console.log("Scryfall sets:", data.data); // logs the array of sets
+          } catch (err) {
+            console.error("Error fetching sets:", err);
+          }
+        }
+        fetchSets();
+    }, []);
 
   return (
     <Box
