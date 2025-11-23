@@ -14,6 +14,11 @@ import {
 export default function Sidebar() {
   const { colorMode } = useColorMode();
   const [mtgsets, setMtgSets] = useState([]);
+  const [ondeck, setOnDeck] = useState("");
+  const handleClick = (setId) => {
+      setOnDeck(setId);
+      console.log(ondeck);
+  }
 
     useEffect(() => {
         async function fetchSets() {
@@ -21,7 +26,7 @@ export default function Sidebar() {
             const res = await fetch("https://api.scryfall.com/sets");
             const data = await res.json();
             const draftable = data.data.filter(
-                set => set.set_type == "expansion");
+                set => set.set_type == "expansion" && set.card_count > 120);
             setMtgSets(draftable)
             console.log("Scryfall sets:", data.data); // logs the array of sets
           } catch (err) {
@@ -44,7 +49,7 @@ export default function Sidebar() {
         <VStack my="4px">
           <Heading size="md" my="10px">MTG Flashcards</Heading>
           {mtgsets.map((set) => (
-              <Button my="-3px" variant="ghost" w="103%" key={set.d} id={set.set_code}>{set.name}</Button>
+              <Button onClick={() => handleClick(set.code)} my="-3px" variant="ghost" w="103%" key={set.code} id={set.code}>{set.name}</Button>
           ))}
         </VStack>
     </Box>
