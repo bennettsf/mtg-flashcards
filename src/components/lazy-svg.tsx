@@ -1,15 +1,20 @@
-import { ComponentProps } from "react";
+import React from 'react';
 
-interface LazySvgProps extends ComponentProps<"svg"> {
+const svgs = import.meta.glob('../assets/set_symbols/*.svg', { eager: true, import: 'default' });
+
+interface LazySvgProps extends React.ComponentProps<'svg'> {
   name: string;
 }
 
-export const LazySvg = async ({ name, ...props }: LazySvgProps) => {
-  try {
-      const Svg = (await import(`@/assets/set_symbols/${name}.svg`)).default;
-      return <Svg {...props} />;
-  } catch(err) {
-    console.error("Error fetching sets:", err);
-  }
+export function LazySvg({ name, ...props }: LazySvgProps) {
+  const SvgComponent = svgs[`../assets/set_symbols/${name}.svg`] as React.FC<
+    React.SVGProps<SVGSVGElement>
+  >;
+  console.log('SVG Component:', SvgComponent);
 
-};
+  if (!SvgComponent) {
+    console.warn(`SVG for set code "${name}" not found.`);
+    return null;
+  }
+  return <SvgComponent {...props} />;
+}
