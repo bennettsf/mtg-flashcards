@@ -53,14 +53,7 @@ function App() {
         border={'1px solid gray'}
       >
         {/* Top row */}
-        <Box
-          mb={4}
-          border={'1px solid gray'}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          h="35%"
-        >
+        <Box mb={4} display="flex" justifyContent="center" alignItems="center" h="35%">
           <FlashCard />
         </Box>
 
