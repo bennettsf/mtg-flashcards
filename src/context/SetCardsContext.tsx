@@ -32,8 +32,12 @@ export const SetCardsProvider = ({ children }: { children: ReactNode }) => {
       setError(null);
 
       try {
-        const fetchedCards = await fetchCardDataFromSet(selectedSet);
+        const fetchedCards = await fetchCardDataFromSet(
+          selectedSet,
+          '(type:instant OR oracle:flash) -oracle:flashback (game:paper)'
+        );
         setCards(fetchedCards);
+        console.log(`Fetched Cards:`, fetchedCards);
         setCache((prev) => ({ ...prev, [selectedSet]: fetchedCards }));
       } catch (err) {
         console.error(err);

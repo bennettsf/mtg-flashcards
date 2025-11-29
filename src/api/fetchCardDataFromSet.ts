@@ -1,11 +1,16 @@
 import type { MtgCard } from '@/types/mtg';
 
-export async function fetchCardDataFromSet(setCode: string): Promise<MtgCard[]> {
-  const res = await fetch(
-    `https://api.scryfall.com/cards/search?order=set&q=e%3A${setCode}&unique=prints`
-  );
+export async function fetchCardDataFromSet(
+  setCode: string,
+  extraQuery: string = ''
+): Promise<MtgCard[]> {
+  const query = `set:${setCode} ${extraQuery}`.trim();
+
+  const url = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(query)}&unique=prints`;
+
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`Failed to fetch cards for set ${setCode}`);
 
   const data = await res.json();
-  return data.data;
+  return data.data as MtgCard[];
 }
