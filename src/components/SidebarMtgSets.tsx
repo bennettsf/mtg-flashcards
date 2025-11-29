@@ -2,27 +2,36 @@ import { Box, Heading, VStack, Button, HStack, Text, Spinner, Center } from '@ch
 import { useColorMode } from './ui/color-mode';
 import { LazySvg } from './LazySvg';
 import type { MtgSet } from '@/types/mtg';
+import { useEffect, useState } from 'react';
+import { fetchDraftableSets } from '@/api/fetchDraftableSets';
+import { useSelectedSet } from '@/context/SelectedSetContext';
 
-type SidebarMtgSetsProps = {
-  mtgsets: MtgSet[];
-  ondeck: string;
-  setOnDeck: (setId: string) => void;
-  isLoading: boolean;
-  error: string | null;
-};
-
-export default function SidebarMtgSets({
-  mtgsets,
-  ondeck,
-  setOnDeck,
-  isLoading,
-  error,
-}: SidebarMtgSetsProps) {
+export default function SidebarMtgSets() {
   const { colorMode } = useColorMode();
+  const { setSelectedSet } = useSelectedSet();
+  const [mtgSets, setMtgSets] = useState<MtgSet[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchSets() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const draftable = await fetchDraftableSets();
+        setMtgSets(draftable);
+      } catch (err) {
+        setError('Failed to fetch MTG sets');
+        console.error('Error fetching sets:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchSets();
+  }, []);
 
   const handleClick = (setId: string) => {
-    setOnDeck(setId);
-    console.log(ondeck);
+    setSelectedSet(setId);
   };
 
   return (
@@ -40,7 +49,7 @@ export default function SidebarMtgSets({
     >
       <VStack gap={0} align="stretch" width="100%">
         <Heading size="md" my="10px" textAlign="center">
-          Sets
+          Draftable Sets
         </Heading>
 
         {isLoading ? (
@@ -52,7 +61,7 @@ export default function SidebarMtgSets({
             <Text color="red.500">Error: {error}</Text>
           </Center>
         ) : (
-          mtgsets.map((set) => (
+          mtgSets.map((set) => (
             <Button
               key={set.code}
               id={set.code}
