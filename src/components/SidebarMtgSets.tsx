@@ -5,10 +5,12 @@ import type { MtgSet } from '@/types/mtg';
 import { useEffect, useState } from 'react';
 import { fetchDraftableSets } from '@/api/fetchDraftableSets';
 import { useSelectedSet } from '@/context/SelectedSetContext';
+import { useCardGuesses } from '@/context/CardGuessesContext';
 
 export default function SidebarMtgSets() {
   const { colorMode } = useColorMode();
   const { setSelectedSet } = useSelectedSet();
+  const { clearCardGuesses } = useCardGuesses();
   const [mtgSets, setMtgSets] = useState<MtgSet[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,6 +34,7 @@ export default function SidebarMtgSets() {
 
   const handleClick = (setId: string) => {
     setSelectedSet(setId);
+    clearCardGuesses();
   };
 
   return (

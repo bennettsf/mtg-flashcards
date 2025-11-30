@@ -30,7 +30,6 @@ const FlipButton = ({
 
 function FlashcardArea() {
   const [flipped, setFlipped] = useState(false);
-  console.log('Flashcard rendered, flipped:', flipped);
 
   return (
     <Box className="flash-card">

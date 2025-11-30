@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { useSelectedSet } from './SelectedSetContext';
 import { fetchCardDataFromSet } from '../api/fetchCardDataFromSet';
-import type { MtgCard } from '../types/mtg'; // Your TS type for a card
+import type { MtgCard } from '@/types/mtg';
 import { db } from '@/db/db';
 
 interface SetCardsContextType {
@@ -30,6 +30,7 @@ export const SetCardsProvider = ({ children }: { children: ReactNode }) => {
 
       if (cached.length > 0) {
         setCards(cached);
+
         setIsLoading(false);
         return;
       }
