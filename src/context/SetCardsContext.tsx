@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import { useSelectedSet } from './SelectedSetContext';
 import { fetchCardDataFromSet } from '../api/fetchCardDataFromSet';
 import type { MtgCard } from '../types/mtg'; // Your TS type for a card
+import { db } from '@/db/db';
 
 interface SetCardsContextType {
   cards: MtgCard[];
@@ -14,7 +15,6 @@ const SetCardsContext = createContext<SetCardsContextType | undefined>(undefined
 export const SetCardsProvider = ({ children }: { children: ReactNode }) => {
   const { selectedSet } = useSelectedSet();
   const [cards, setCards] = useState<MtgCard[]>([]);
-  const [cache, setCache] = useState<Record<string, MtgCard[]>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,14 +22,17 @@ export const SetCardsProvider = ({ children }: { children: ReactNode }) => {
     if (!selectedSet) return;
 
     const loadCards = async () => {
-      // Return cached cards if available
-      if (cache[selectedSet]) {
-        setCards(cache[selectedSet]);
-        return;
-      }
-
       setIsLoading(true);
       setError(null);
+
+      // Try to load from IndexedDB first using Dexie
+      const cached = await db.cards.where('set').equals(selectedSet).toArray();
+
+      if (cached.length > 0) {
+        setCards(cached);
+        setIsLoading(false);
+        return;
+      }
 
       try {
         const fetchedCards = await fetchCardDataFromSet(
@@ -37,8 +40,7 @@ export const SetCardsProvider = ({ children }: { children: ReactNode }) => {
           '(type:instant OR oracle:flash) -oracle:flashback (game:paper)'
         );
         setCards(fetchedCards);
-        console.log(`Fetched Cards:`, fetchedCards);
-        setCache((prev) => ({ ...prev, [selectedSet]: fetchedCards }));
+        await db.cards.bulkPut(fetchedCards);
       } catch (err) {
         console.error(err);
         setError('Failed to fetch cards.');
@@ -48,7 +50,7 @@ export const SetCardsProvider = ({ children }: { children: ReactNode }) => {
     };
 
     loadCards();
-  }, [selectedSet, cache]);
+  }, [selectedSet]);
 
   return (
     <SetCardsContext.Provider value={{ cards, isLoading, error }}>
