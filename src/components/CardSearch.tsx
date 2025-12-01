@@ -59,17 +59,7 @@ function CardSearch() {
                   addCardGuess(card);
                 }}
               >
-                <img
-                  src={card.image_uris?.small}
-                  alt={card.name}
-                  style={{
-                    width: '50px',
-                    height: 'auto',
-                    borderRadius: '4px',
-                    flexShrink: 0,
-                  }}
-                />
-                <Text fontSize={'sm'} ml={3}>
+               <Text fontSize={'sm'} ml={3}>
                   {card.name}
                 </Text>
               </Box>
@@ -78,7 +68,6 @@ function CardSearch() {
         )}
       </Box>
       <Box mt={4}>
-        <img src={selectedCard ? selectedCard.image_uris?.small : undefined} alt="" />
         <Text>{selectedCard ? selectedCard.name : ''}</Text>
       </Box>
     </Box>

@@ -18,7 +18,7 @@ set_codes =[]
 draftable_sets = {} 
 svg_uris = {}
 for mset in sets['data']:
-    if mset['card_count'] > 120 and (mset['set_type'] == "expansion" or mset['set_type'] == "core"):
+    if (mset['set_type'] == "expansion" or mset['set_type'] == "core"):
         set_code = mset['code']
         set_codes.append(set_code)
         draftable_sets[set_code] = mset
