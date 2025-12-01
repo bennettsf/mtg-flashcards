@@ -31,10 +31,11 @@ const FlipButton = ({
 
 function FlashcardArea() {
   const [flipped, setFlipped] = useState(false);
-  const { manaValue, setManaValue } = useInputManaValue();
+  const { manaValue, setManaValue, manaCost, setManaCost } = useInputManaValue();
 
   const handleChange = (e) => {
     setManaValue(e.target.value.length);
+    setManaCost(e.target.value);
   };
 
   return (

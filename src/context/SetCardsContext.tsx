@@ -37,8 +37,7 @@ export const SetCardsProvider = ({ children }: { children: ReactNode }) => {
 
       try {
         const fetchedCards = await fetchCardDataFromSet(
-          selectedSet,
-          '(type:instant OR oracle:flash) -oracle:flashback (game:paper)'
+          selectedSet
         );
         setCards(fetchedCards);
         await db.cards.bulkPut(fetchedCards);

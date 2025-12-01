@@ -2,9 +2,8 @@ import type { MtgCard } from '@/types/mtg';
 
 export async function fetchCardDataFromSet(
   setCode: string,
-  extraQuery: string = ''
 ): Promise<MtgCard[]> {
-  const query = `set:${setCode} ${extraQuery}`.trim();
+  const query = `set:${setCode}`.trim();
 
   const url = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(query)}&unique=prints`;
 
