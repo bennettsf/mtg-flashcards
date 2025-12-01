@@ -1,10 +1,11 @@
 import { useState, type MouseEventHandler, type ReactNode } from 'react';
 import './Flashcard.css';
 import { Box, Button, IconButton, InputGroup, Input, Text } from '@chakra-ui/react';
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { FaExclamation, FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { Tooltip } from './ui/tooltip';
 import { RiArrowRightLine } from 'react-icons/ri';
 import { useInputManaValue } from '@/context/InputManaValueContext';
+import { fetchAnswers } from '@/api/fetchAnswers';
 
 const FlipButton = ({
   icon,
@@ -45,6 +46,13 @@ function FlashcardArea() {
           <InputGroup flex="1">
             <Input placeholder="WUBRG" onChange={handleChange} bg="gray.900" />
           </InputGroup>
+          <Box position="absolute" bottom="10px" right="55px" zIndex="10">
+            <Button
+              icon={<FaExclamation />}
+              label="Begin Quiz"
+              onClick={() => fetchAnswers("tla", manaValue)}
+            />
+          </Box>
           <Box position="absolute" bottom="10px" right="10px" zIndex="10">
             <FlipButton
               icon={<FaRegEye />}
