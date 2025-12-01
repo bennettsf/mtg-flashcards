@@ -4,6 +4,7 @@ import { Box, Button, IconButton, InputGroup, Input, Text } from '@chakra-ui/rea
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { Tooltip } from './ui/tooltip';
 import { RiArrowRightLine } from 'react-icons/ri';
+import { useInputManaValue } from '@/context/InputManaValueContext';
 
 const FlipButton = ({
   icon,
@@ -30,22 +31,18 @@ const FlipButton = ({
 
 function FlashcardArea() {
   const [flipped, setFlipped] = useState(false);
-  const [mv, setManaValue] = useState(0);
+  const { manaValue, setManaValue } = useInputManaValue();
 
   const handleChange = (e) => {
     setManaValue(e.target.value.length);
-  }
+  };
 
   return (
     <Box className="flash-card">
       <Box className={`flash-card-inner ${flipped ? 'flipped' : ''}`}>
         <Box className="flash-card-front">
           <InputGroup flex="1">
-            <Input
-            placeholder="WUBRG"
-            onChange={handleChange}
-            bg="gray.900"
-            />
+            <Input placeholder="WUBRG" onChange={handleChange} bg="gray.900" />
           </InputGroup>
           <Box position="absolute" bottom="10px" right="10px" zIndex="10">
             <FlipButton
