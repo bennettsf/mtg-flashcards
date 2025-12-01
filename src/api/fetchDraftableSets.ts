@@ -9,6 +9,6 @@ export async function fetchDraftableSets(): Promise<MtgSet[]> {
   // Filter draftable sets
   return data.data.filter(
     (set: MtgSet) =>
-      (set.set_type === 'expansion' || set.set_type === 'core') && set.card_count > 120
+      (set.set_type === 'expansion' || set.set_type === 'core') && set.card_count > 100
   );
 }

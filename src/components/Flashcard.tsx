@@ -1,6 +1,6 @@
 import { useState, type MouseEventHandler, type ReactNode } from 'react';
 import './Flashcard.css';
-import { Box, Button, IconButton, Text } from '@chakra-ui/react';
+import { Box, Button, IconButton, InputGroup, Input, Text } from '@chakra-ui/react';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { Tooltip } from './ui/tooltip';
 import { RiArrowRightLine } from 'react-icons/ri';
@@ -30,12 +30,23 @@ const FlipButton = ({
 
 function FlashcardArea() {
   const [flipped, setFlipped] = useState(false);
+  const [mv, setManaValue] = useState(0);
+
+  const handleChange = (e) => {
+    setManaValue(e.target.value.length);
+  }
 
   return (
     <Box className="flash-card">
       <Box className={`flash-card-inner ${flipped ? 'flipped' : ''}`}>
         <Box className="flash-card-front">
-          <Text fontSize={40}>Mana</Text>
+          <InputGroup flex="1">
+            <Input
+            placeholder="WUBRG"
+            onChange={handleChange}
+            bg="gray.900"
+            />
+          </InputGroup>
           <Box position="absolute" bottom="10px" right="10px" zIndex="10">
             <FlipButton
               icon={<FaRegEye />}
