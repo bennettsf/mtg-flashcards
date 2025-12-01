@@ -5,7 +5,7 @@ export async function fetchCardDataFromSet(
 ): Promise<MtgCard[]> {
   const query = `set:${setCode}`.trim();
 
-  const url = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(query)}&unique=prints`;
+  const url = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(query)}&unique=cards`;
 
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Failed to fetch cards for set ${setCode}`);

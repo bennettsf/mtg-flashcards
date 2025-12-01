@@ -4,8 +4,9 @@ import { Box, Button, IconButton, InputGroup, Input, Text } from '@chakra-ui/rea
 import { FaExclamation, FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { Tooltip } from './ui/tooltip';
 import { RiArrowRightLine } from 'react-icons/ri';
-import { useInputManaValue } from '@/context/InputManaValueContext';
 import { fetchAnswers } from '@/api/fetchAnswers';
+import { useInputManaValue } from '@/context/InputManaValueContext';
+import { useSelectedSet } from '@/context/SelectedSetContext'
 
 const FlipButton = ({
   icon,
@@ -33,6 +34,7 @@ const FlipButton = ({
 function FlashcardArea() {
   const [flipped, setFlipped] = useState(false);
   const { manaValue, setManaValue, manaCost, setManaCost } = useInputManaValue();
+  const { selectedSet } = useSelectedSet();
 
   const handleChange = (e) => {
     setManaValue(e.target.value.length);
@@ -50,7 +52,7 @@ function FlashcardArea() {
             <Button
               icon={<FaExclamation />}
               label="Begin Quiz"
-              onClick={() => fetchAnswers("tla", manaValue)}
+              onClick={() => fetchAnswers("tla", manaValue, manaCost)}
             />
           </Box>
           <Box position="absolute" bottom="10px" right="10px" zIndex="10">
