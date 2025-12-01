@@ -18,6 +18,7 @@ export async function fetchAnswers(
     const cardCost = card.mana_cost.replaceAll("{", "").replaceAll("}", "").replaceAll("X", "");
     const cardCostArr = cardCost.split('');
     const manaOpenArr = manaOpen.toUpperCase().split('');
+    console.log(card.name) 
     if(isCastable(manaOpenArr, cardCostArr)) {
         answers.push(card)
     }
@@ -28,18 +29,28 @@ export async function fetchAnswers(
 }
 
 function isCastable(manaOpen: string[], cardCost: string[]): boolean {
-    const filteredCosts = cardCost.filter(x => !manaOpen.includes(x));
-    const filteredOpen = manaOpen.filter(x => !cardCost.includes(x));
+    for (let i = 0; i < cardCost.length; i++) {
+        const toPayIdx = manaOpen.indexOf(cardCost[i]);
+        //TODO(dhalden) consider implementing CheckForHybrid, here and consider two-brid/Phyrexian
+        if (toPayIdx > -1) {
+            cardCost.splice(i, 1)
+            manaOpen.splice(toPayIdx, 1)
+            i--;
+        }
+    }
     // if all costs have been paid by open mana, we're clear.
-    if (filteredCosts.length == 0) {
+    console.log("Cost: ", cardCost)
+    console.log("Open: ", manaOpen)
+    if (cardCost.length == 0) {
         return true;
-    } else if (filteredCosts.length == 1) {
-        const genericCost = Number(filteredCosts[0]);
+    } else if (cardCost.length == 1) {
+        const genericCost = Number(cardCost[0]);
+        console.log("genericCost: ", genericCost)
         // If remaining mana hasn't been reduced to a number, we can't cast it.
         if (isNaN(genericCost)) {
             return false;
         // if remaining mana is less than open mana, we CAN cast it.
-        } else if (genericCost <= filteredOpen.length) {
+        } else if (genericCost <= manaOpen.length) {
             return true;
         // if remaining mana is more than open mana, we can't cast it.
         } else {
