@@ -21,6 +21,12 @@ export default function SidebarMtgSets() {
       setError(null);
       try {
         const draftable = await fetchDraftableSets();
+        // // Automatically select the first set
+        // const firstCode = draftable[0]?.code;
+        // if (firstCode) {
+        //   setSelectedSet(firstCode);
+        // }
+        // Need to figure out how to set focus to first button after fetch
         setMtgSets(draftable);
       } catch (err) {
         setError('Failed to fetch MTG sets');
@@ -30,7 +36,7 @@ export default function SidebarMtgSets() {
       }
     }
     fetchSets();
-  }, []);
+  }, [setSelectedSet]);
 
   const handleClick = (setId: string) => {
     setSelectedSet(setId);

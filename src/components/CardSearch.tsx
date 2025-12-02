@@ -1,6 +1,6 @@
 import { useCardGuesses } from '@/context/CardGuessesContext';
 import { useSetCards } from '@/context/SetCardsContext';
-import type { MtgCard } from '@/types/mtg';
+
 import { Box, Input, InputGroup, VStack, Text } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 import { LuSearch } from 'react-icons/lu';
@@ -9,12 +9,13 @@ function CardSearch() {
   const { cards } = useSetCards();
   const { addCardGuess } = useCardGuesses();
 
-  const [selectedCard, setSelectedCard] = useState<MtgCard | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredCards = useMemo(() => {
     if (!searchQuery) return [];
-    return cards.filter((card) => card.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    return cards
+      .filter((card) => card.name.toLowerCase().includes(searchQuery.toLowerCase()))
+      .slice(0, 20); // Limit to 20 results for better performance
   }, [searchQuery, cards]);
 
   return (
@@ -53,22 +54,19 @@ function CardSearch() {
                 display="flex"
                 alignItems="center"
                 _hover={{ bg: 'gray.800', cursor: 'pointer' }}
-                onClick={() => {
-                  setSearchQuery('');
-                  setSelectedCard(card);
+                onMouseDown={(e) => {
+                  e.preventDefault(); // Prevent focus issues
                   addCardGuess(card);
+                  setSearchQuery('');
                 }}
               >
-               <Text fontSize={'sm'} ml={3}>
+                <Text fontSize={'sm'} ml={3}>
                   {card.name}
                 </Text>
               </Box>
             ))}
           </VStack>
         )}
-      </Box>
-      <Box mt={4}>
-        <Text>{selectedCard ? selectedCard.name : ''}</Text>
       </Box>
     </Box>
   );

@@ -6,7 +6,7 @@ import { Tooltip } from './ui/tooltip';
 import { RiArrowRightLine } from 'react-icons/ri';
 import { fetchAnswers } from '@/api/fetchAnswers';
 import { useInputManaValue } from '@/context/InputManaValueContext';
-import { useSelectedSet } from '@/context/SelectedSetContext'
+import { useSelectedSet } from '@/context/SelectedSetContext';
 
 const FlipButton = ({
   icon,
@@ -33,12 +33,12 @@ const FlipButton = ({
 
 function FlashcardArea() {
   const [flipped, setFlipped] = useState(false);
-  const { manaValue, setManaValue, manaCost, setManaCost } = useInputManaValue();
+  const { manaValue, setManaValue, manaOpen, setManaOpen } = useInputManaValue();
   const { selectedSet } = useSelectedSet();
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setManaValue(e.target.value.length);
-    setManaCost(e.target.value);
+    setManaOpen(e.target.value);
   };
 
   return (
@@ -49,11 +49,9 @@ function FlashcardArea() {
             <Input placeholder="WUBRG" onChange={handleChange} bg="gray.900" />
           </InputGroup>
           <Box position="absolute" bottom="10px" right="55px" zIndex="10">
-            <Button
-              icon={<FaExclamation />}
-              label="Begin Quiz"
-              onClick={() => fetchAnswers("tla", manaValue, manaCost)}
-            />
+            <Button color="white" onClick={() => fetchAnswers(selectedSet, manaValue, manaOpen)}>
+              <FaExclamation />
+            </Button>
           </Box>
           <Box position="absolute" bottom="10px" right="10px" zIndex="10">
             <FlipButton

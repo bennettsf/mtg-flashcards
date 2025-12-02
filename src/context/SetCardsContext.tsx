@@ -36,9 +36,7 @@ export const SetCardsProvider = ({ children }: { children: ReactNode }) => {
       }
 
       try {
-        const fetchedCards = await fetchCardDataFromSet(
-          selectedSet
-        );
+        const fetchedCards = await fetchCardDataFromSet(selectedSet);
         setCards(fetchedCards);
         await db.cards.bulkPut(fetchedCards);
       } catch (err) {
